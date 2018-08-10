@@ -1,12 +1,13 @@
 DROP DATABASE IF EXISTS bamazon;
 
+-- Database being used for entire application
 CREATE DATABASE bamazon;
 
 USE bamazon;
 
 DROP TABLE IF EXISTS products;
 
---Table being referenced for part one
+-- Table being referenced for part one
 CREATE TABLE products (
   item_id int AUTO_INCREMENT NOT NULL,
   product_name varchar(50) NOT NULL,
@@ -16,7 +17,7 @@ CREATE TABLE products (
   PRIMARY KEY (item_id)
 );
 
--- Dummy values 
+-- Dummy values
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('TV', 'Electronics', 300.00, 5);
 
