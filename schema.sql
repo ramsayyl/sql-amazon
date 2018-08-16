@@ -7,13 +7,14 @@ USE bamazon;
 
 DROP TABLE IF EXISTS products;
 
--- Table being referenced for part one
+-- Table being referenced for part one & two
 CREATE TABLE products (
   item_id int AUTO_INCREMENT NOT NULL,
   product_name varchar(50) NOT NULL,
   department_name varchar(50),
   price float(5, 2) NOT NULL,
   stock_quantity int NOT NULL,
+  product_sales int,
   PRIMARY KEY (item_id)
 );
 
@@ -47,3 +48,12 @@ VALUES ('Shirts', 'Clothing', 15.00, 30);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Rice', 'Food', 10.00, 35);
+
+DROP TABLE IF EXISTS departments;
+
+-- Table being referenced for part three
+CREATE TABLE departments (
+  department_id int NOT NULL,
+  department_name varchar(50) NOT NULL,
+  over_head_costs int NOT NULL
+);
