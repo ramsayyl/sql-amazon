@@ -10,12 +10,12 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   go();
 });
 
+// Command line prompts using Inquirer NPM
 function go() {
 
   inquirer.prompt([
@@ -47,18 +47,17 @@ function go() {
         process.exit(1);
         break;
 
-
     }
   })
-
 }
 
+// Error handle user input
 function validateNum(num) {
   var reg = /^\d+$/;
   return reg.test(num) || "Amount should be a number!";
 }
 
-
+// View info about all products that are in stock
 function queryProducts() {
   var query = "SELECT * FROM products";
 
@@ -71,6 +70,7 @@ function queryProducts() {
   go();
 }
 
+// View all the products that have a stock level less than or equal to 5
 function viewLowInv() {
   var query = "SELECT * FROM products WHERE stock_quantity <= 5";
 
@@ -87,6 +87,7 @@ function viewLowInv() {
   go();
 }
 
+// Increase the stock of a certain product
 function addInv(answers) {
 
 	inquirer.prompt([
@@ -112,11 +113,12 @@ function addInv(answers) {
 		connection.query(queryStr, [choice], function(err, data) {
 			if (err) throw err;
 
+      // If data is empty then handle error
 			if (data.length === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid Item ID.');
 				addInventory();
 
-			} else {
+			} else { // Otherwise complete the user request
 				var productData = data[0];
 
 				console.log('\nUpdating Inventory...');
@@ -125,9 +127,9 @@ function addInv(answers) {
 				connection.query(updateQueryStr, function(err, data) {
 					if (err) throw err;
 
+          // Update user on changes made to the inventory
 					console.log('\nStock count for Item ID ' + choice + ' has been updated to ' + (productData.stock_quantity + addQuantity) + '.');
 					console.log("\n---------------------------------------------------------------------\n");
-
 				})
 			}
 		})
@@ -135,6 +137,7 @@ function addInv(answers) {
 	})
 }
 
+// Add a complete new product to the products table
 function addNewProduct(answers) {
 
 	inquirer.prompt([
@@ -172,9 +175,9 @@ function addNewProduct(answers) {
 		connection.query(queryStr, answers, function (err, res, fields) {
 			if (err) throw err;
 
+      // Update user on changes made to the inventory
 			console.log('New product has been added to the inventory under Item ID ' + res.insertId + '.');
 			console.log("\n---------------------------------------------------------------------\n");
-
 		});
     go();
 	})

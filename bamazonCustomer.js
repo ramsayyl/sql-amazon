@@ -17,6 +17,7 @@ connection.connect(function(err) {
 });
 
 
+// Command line prompts using Inquirer NPM
 function go() {
   inquirer.prompt([
   {
@@ -36,11 +37,13 @@ function go() {
   })
 }
 
+// Error handle user input
 function validateNum(num) {
   var reg = /^\d+$/;
   return reg.test(num) || "Amount should be a number!";
 }
 
+// Find the product with the ID entered by the user
 function findID(answers) {
   var choice = answers.id_input;
   var userAmount = answers.amount_input;
@@ -56,15 +59,18 @@ function findID(answers) {
     res[0].stock_quantity -= userAmount;
     res[0].product_sales += parseFloat(userAmount);
 
+      // Once product is found, update inventory based on user input
       if (res[0].stock_quantity >= 0) {
         var updateQuery = 'UPDATE products SET stock_quantity = ?, product_sales = ? WHERE item_id = ' + choice;
 
         var receipt = userAmount * res[0].price;
 
+            // Product sales column set to record amount of the product that gets sold
             connection.query(updateQuery,[res[0].stock_quantity, res[0].product_sales], function(err, res) {
   						if (err) throw err;
   					});
 
+            // Inform user of their purchase details
             console.log("\nAFTER PURCHASE\n----------------\n");
             console.log("Product Name: " + res[0].product_name + "\n\nDepartment Name: " + res[0].department_name + "\n\nAmount In Stock: " + res[0].stock_quantity + "\n\nPrice: $" + res[0].price + "\n\nTotal Sold: " + res[0].product_sales);
             console.log("\nTotal Purchased: " + userAmount + "\nAmount Spent: $" + receipt + "\n\nProfit made on " + res[0].product_name + ": $" + (res[0].product_sales * res[0].price));
